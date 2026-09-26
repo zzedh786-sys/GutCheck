@@ -138,8 +138,26 @@
       <div class="product">${img ? `<img src="${esc(img)}" alt="">` : ''}<div><h3>${esc(name)}</h3>${brand ? `<p class="small muted">${brand}</p>` : ''}</div></div>
       ${verdictHtml}
       ${itemsHtml}
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <button class="btn ghost small" id="copyIngBtn" type="button">Copy ingredients</button>
+        <span class="small muted">Paste into Gutwise’s food check to log it there.</span>
+      </div>
       <details class="manual"><summary>Ingredients list read from Open Food Facts</summary><p class="small muted" style="padding-top:8px">${esc(ingredientsText)}</p></details>
     </div>`;
+
+    const copyBtn = $('#copyIngBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const label = brand ? `${name} (${brand}): ` : `${name}: `;
+        try {
+          await navigator.clipboard.writeText(label + ingredientsText);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy ingredients'; }, 1800);
+        } catch (e) {
+          copyBtn.textContent = 'Select the text below to copy';
+        }
+      });
+    }
   }
 
   async function lookup(code) {
