@@ -59,6 +59,59 @@ Then open `http://localhost:8080`. Camera access needs a secure context
    Danger Zone**.
 5. Live in a minute or two at `https://<username>.github.io/<repo>/`.
 
+## Optional: accounts and cross-device sync (Firebase)
+
+By default there's no sign-in and no backend — every install of this file
+just works, storing everything in that browser's `localStorage`, as
+described above. If you'd rather have a real sign-in page and have your
+data follow you across devices, this app also supports Firebase
+Authentication + Firestore, off by default until you configure it.
+
+**1. Create a Firebase project.** Go to
+[console.firebase.google.com](https://console.firebase.google.com), create
+a project (the free "Spark" plan is enough for personal use).
+
+**2. Turn on sign-in.** In the console: **Build → Authentication → Get
+started → Sign-in method**. Enable **Email/Password**, and optionally
+**Google**.
+
+**3. Turn on the database.** **Build → Firestore Database → Create
+database**. Any region is fine; start in production mode.
+
+**4. Set the security rules.** In Firestore, go to the **Rules** tab and
+replace the contents with:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+This is what actually protects your data — it means only a signed-in
+user can read or write their own document, nobody else's.
+
+**5. Get your config.** **Project settings** (the gear icon) → **General**
+→ scroll to **Your apps** → add a **web app** (the `</>` icon) → copy the
+`firebaseConfig` object it gives you.
+
+**6. Paste it in.** Open `firebase-config.js` in this repo and replace the
+placeholder values with the ones you just copied, then commit and push.
+These values aren't secret — they're meant to be public in client code;
+the security rules above are what actually protect your data.
+
+That's it — reload the page and you'll see a sign-in screen. Once signed
+in, `S` (the app's whole data object) is mirrored to a Firestore document
+at `users/{your-uid}`, debounced by about a second after each change, and
+pulled back down the next time you sign in on any device. Meal **photos
+are not synced** (Firestore caps a document at 1&nbsp;MB, and photos alone
+can exceed that) — they stay local to whichever device took them.
+
+To turn the sign-in gate back off, put the placeholder values back in
+`firebase-config.js`.
+
 ## Moving your data from the Claude-hosted version
 
 If you used the Gutwise Claude Artifact before this existed, its data is

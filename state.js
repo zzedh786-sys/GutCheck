@@ -3,7 +3,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const KEY='gutwise.v1',DAY=864e5;
 let S={meals:[],sym:[],breath:[],meds:[],recipes:[],demo:false,seeded:false};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}};
+let _cloudSync=null; // set by auth.js once signed in: a fn that mirrors S to Firestore, debounced
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));if(_cloudSync)_cloudSync();return true}catch(e){return false}};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const dkey=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const fmtT=ts=>new Date(ts).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});

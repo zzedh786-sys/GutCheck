@@ -65,7 +65,7 @@ main{display:flex;flex-direction:column;gap:22px;padding-block:14px 0}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.9rem;display:inline-flex;align-items:center;gap:7px}
 .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-weight:600}
 label.f{display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:.88rem}
-input[type=text],input[type=search],input[type=datetime-local],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;font-weight:400}
+input[type=text],input[type=search],input[type=datetime-local],input[type=email],input[type=password],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;font-weight:400}
 textarea{min-height:88px;resize:vertical}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .light{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;border-radius:999px;padding:2px 9px 2px 7px;white-space:nowrap}
