@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GutCheck — scan a food label for FODMAPs</title>
+<meta name="description" content="Scan a packaged food's barcode, look it up on Open Food Facts, and check its ingredients against a low FODMAP traffic-light guide.">
+<meta name="theme-color" content="#F2F4F1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234453A6'/%3E%3Cpath d='M8 10h16M8 16h16M8 22h10' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M8 10h16M8 16h16M8 22h10"/></svg>GutCheck</div>
+    <a class="ghostlink" href="#howitworks">How it works</a>
+  </header>
+
+  <main>
+    <section class="sec">
+      <h1>Scan a packaged food</h1>
+      <p class="sub">Point your camera at a barcode. GutCheck looks the product up on Open Food Facts and checks its ingredients against a low FODMAP traffic-light guide — the same one used in the Gutwise tracker.</p>
+    </section>
+
+    <section class="panel lift sec" id="scanPanel">
+      <div class="scanbox" id="scanbox" hidden>
+        <video id="video" playsinline muted></video>
+        <div class="scanline" aria-hidden="true"></div>
+        <button class="btn ghost small stopbtn" id="stopBtn" type="button">Stop</button>
+      </div>
+      <div class="row" id="scanControls">
+        <button class="btn" id="startBtn" type="button">Start camera scan</button>
+        <span class="small muted" id="scanStatus"></span>
+      </div>
+      <details class="manual">
+        <summary>Type a barcode instead</summary>
+        <form class="row" id="manualForm">
+          <label class="f" for="manualCode" style="flex:1;min-width:180px">Barcode number
+            <input id="manualCode" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 5000159484695" autocomplete="off">
+          </label>
+          <button class="btn ghost" type="submit">Look up</button>
+        </form>
+      </details>
+      <p class="small muted">Your camera video stays on your device — only the barcode number is sent, to Open Food Facts, to look the product up.</p>
+    </section>
+
+    <section id="result"></section>
+
+    <section class="sec" id="howitworks">
+      <details>
+        <summary>How this works, and its limits</summary>
+        <div class="body">
+          <p>GutCheck reads a barcode with your camera, then asks <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener">Open Food Facts</a> — a free, crowd-sourced product database — for that product's ingredients list. It runs that text through the same FODMAP-matching engine as the Gutwise tracker, using the traffic-light system: green (low FODMAP), amber (moderate, mind the serve size) and red (high FODMAP).</p>
+          <ul>
+            <li><b>Coverage varies.</b> Open Food Facts is strongest for UK and EU packaged foods and weaker for smaller, regional or freshly-launched products. A "not found" result doesn't mean a product is safe or unsafe — just that it isn't in the database yet.</li>
+            <li><b>It's reading Open Food Facts' ingredient text, not the Monash database.</b> The FODMAP traffic-light ratings come from a curated list based on published Monash University research, not Monash's own licensed database or app.</li>
+            <li><b>Always check the pack</b> if a result looks wrong, incomplete, or the product has changed its recipe since it was catalogued.</li>
+            <li><b>Camera scanning</b> works in most Chrome, Edge and Android browsers, and in Safari/iOS via a fallback library. If your camera won't start, use "Type a barcode instead".</li>
+          </ul>
+          <p>This tool is for tracking and information, and isn't medical advice.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+  <p class="foot">GutCheck &middot; a companion to the <a href="https://claude.ai/artifact/1JmcoeDJR7peXYEFwYpJLR" target="_blank" rel="noopener">Gutwise</a> IBS tracker.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script src="fodmap-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
