@@ -1,20 +1,16 @@
-# Gutwise (hosted here as "GutCheck")
+# Gutlight
 
-The full Gutwise IBS tracker — gut health score, food diary, symptom and
-medication tracking, meal builder, breathing exercises, trends, and a
-doctor-ready PDF export — plus **real camera barcode scanning** against
-[Open Food Facts](https://world.openfoodfacts.org), all as one static site
-with no backend.
+An IBS and gut health tracker: gut health score, food diary, symptom and
+medication tracking, a FODMAP traffic-light checker with **camera barcode
+scanning** (via [Open Food Facts](https://world.openfoodfacts.org)), a meal
+builder, breathing exercises, trends, and a doctor-ready PDF export. A
+static site with no backend, plus optional Firebase sign-in and sync.
 
-This started as a Claude-hosted Artifact. Barcode scanning needs a real
-network call, which an Artifact's sandbox can't make, so the whole app now
-lives here instead, where nothing is restricted. The repo is named
-`GutCheck`; the app itself is still called Gutwise (the `<title>`, the PDF
-header and the on-page branding all say Gutwise — the repo name is just
-where it's hosted, not a second product).
-
-A separate, earlier version of this repo held a scan-only tool of the same
-name; this replaces it with everything merged into one app.
+Gutlight was previously called Gutlight (it started as a Claude-hosted
+Artifact) and lives in a repo named `GutCheck`. The repo name and the
+Firebase project ID (`gutwise-aebf6`) can't be changed without recreating
+things, so you'll still see those; everything the app shows says Gutlight.
+Data saved under the old name is picked up automatically.
 
 ## How it works
 
@@ -114,7 +110,7 @@ To turn the sign-in gate back off, put the placeholder values back in
 
 ## Moving your data from the Claude-hosted version
 
-If you used the Gutwise Claude Artifact before this existed, its data is
+If you used the Gutlight Claude Artifact before this existed, its data is
 stored in that page's own browser storage and doesn't carry over
 automatically (different origin). The Artifact has an **Export as JSON**
 button on its Trends tab; this app has a matching **Import JSON** button in

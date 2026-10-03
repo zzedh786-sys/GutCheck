@@ -1,4 +1,4 @@
-// Firebase project config (project: gutwise-aebf6).
+// Firebase project config (project ID: gutwise-aebf6 -- the ID is permanent, so it still says "gutwise"; the app is called Gutlight).
 //
 // These values are NOT secret -- they're meant to be public in client-side
 // code. What actually protects the data is the Firestore security rules set

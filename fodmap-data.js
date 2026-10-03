@@ -1,4 +1,4 @@
-// GutCheck FODMAP data + analyzer
+// Gutlight FODMAP data + analyzer
 // Curated traffic-light list based on published Monash University FODMAP
 // guidance, and a small local text-matching engine. Not the licensed
 // Monash database itself -- see README.md.

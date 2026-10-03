@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gutwise</title>
+<title>Gutlight</title>
 <meta name="description" content="Track IBS symptoms and meals, check foods and barcodes against a FODMAP traffic-light guide, see trends, and export a doctor-ready PDF.">
 <meta name="theme-color" content="#F2F4F1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234453A6'/%3E%3Cpath d='M6 8h15a5 5 0 0 1 0 10H11a4 4 0 0 0 0 8h15' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234453A6'/%3E%3Crect x='9' y='3' width='14' height='26' rx='7' stroke='white' stroke-width='2' fill='none'/%3E%3Ccircle cx='16' cy='10' r='2.6' fill='%23D64A42'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23E0A020'/%3E%3Ccircle cx='16' cy='22' r='2.6' fill='%232FA25A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h15a5 5 0 0 1 0 10H11a4 4 0 0 0 0 8h15"/></svg>Gutwise</div>
+    <div class="brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="14" height="26" rx="7"/><circle cx="16" cy="10" r="2.6" fill="#D64A42" stroke="none"/><circle cx="16" cy="16" r="2.6" fill="#E0A020" stroke="none"/><circle cx="16" cy="22" r="2.6" fill="#2FA25A" stroke="none"/></svg>Gutlight</div>
     <div class="row" style="gap:8px;flex-wrap:nowrap">
       <div class="date" id="today"></div>
       <button class="btn ghost small" id="signOutBtn" type="button" hidden>Sign out</button>
@@ -29,7 +29,7 @@
   </header>
   <nav class="tabs" id="nav" aria-label="Sections"></nav>
   <main id="view"></main>
-  <p class="foot" id="foot">Gutwise is a self-tracking aid, not medical advice. Food ratings follow the Monash University traffic-light approach but come from a curated list built for this app, not the licensed Monash database, and barcode lookups depend on Open Food Facts' coverage. Always confirm with the official Monash University FODMAP Diet app and a registered dietitian. Everything you enter is stored in this browser, and in your account if you sign in.</p>
+  <p class="foot" id="foot">Gutlight is a self-tracking aid, not medical advice. Food ratings follow the Monash University traffic-light approach but come from a curated list built for this app, not the licensed Monash database, and barcode lookups depend on Open Food Facts' coverage. Always confirm with the official Monash University FODMAP Diet app and a registered dietitian. Everything you enter is stored in this browser, and in your account if you sign in.</p>
 </div>
 <div id="authOverlay" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px">
   <p class="muted"><span class="spinner" aria-hidden="true"></span>Loading&hellip;</p>

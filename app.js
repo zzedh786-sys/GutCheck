@@ -45,7 +45,7 @@ function home(){
   const nb=S.breath.filter(b=>set.has(dkey(b.ts))).length;
   const trg=triggers();
   return `<section class="sec">
-   ${S.demo?`<div class="banner"><span>You're looking at example data so you can see how Gutwise works.</span><button class="btn small ghost" data-act="clearDemo">Clear and start fresh</button></div>`:''}
+   ${S.demo?`<div class="banner"><span>You're looking at example data so you can see how Gutlight works.</span><button class="btn small ghost" data-act="clearDemo">Clear and start fresh</button></div>`:''}
    ${digestHtml()}
    <div class="panel lift ${tn?'toned tone-'+tn:''}"><div class="gauge">${ringSvg(sc&&sc.v)}
     <div class="sec" style="gap:10px"><header><div><span class="pill ${tn?'tone-'+tn:''}" style="${tn?'':'background:var(--accent-soft);color:var(--accent)'}">${tn?TW[tn]+' gut health':'Gut score'}</span></div><h1 style="margin-top:6px">${sc?band(sc.v):'Start tracking'}</h1><p class="sub">${sc?'Your 7-day score, built from symptoms, stool type and how many meals were low FODMAP.':'Log a meal or how you feel to build your score.'}</p></header>
@@ -126,7 +126,7 @@ document.addEventListener('submit',e=>{
 
 const termOf=f=>f.terms.find(t=>!/[&(]/.test(t))||f.terms[0];
 function resultHtml(text){
-  if(!text.trim())return `<p class="muted">Type a meal, snack or list of ingredients. Gutwise checks each one against its FODMAP list and shows red, amber or green.</p>`;
+  if(!text.trim())return `<p class="muted">Type a meal, snack or list of ingredients. Gutlight checks each one against its FODMAP list and shows red, amber or green.</p>`;
   const a=analyze(text);
   if(!a.items.length)return `<p class="muted">No foods recognised yet.${a.unknown.length?' Couldn’t match: '+a.unknown.map(esc).join(', ')+'.':''} Try single ingredients such as “chicken, rice, garlic”.</p>`;
   const reds=a.items.filter(f=>f.l==='r'),ambs=a.items.filter(f=>f.l==='a');
@@ -139,7 +139,7 @@ function resultHtml(text){
 }
 function log(){
   const byDay={};S.meals.slice().sort((a,b)=>b.ts-a.ts).slice(0,40).forEach(m=>(byDay[fmtD(m.ts)]=byDay[fmtD(m.ts)]||[]).push(m));
-  return `<section class="sec"><header><h1>Food check</h1><p class="sub">Describe what you ate, add a photo if you like, and Gutwise checks the ingredients. Save it to your diary to feed your gut score.</p></header>
+  return `<section class="sec"><header><h1>Food check</h1><p class="sub">Describe what you ate, add a photo if you like, and Gutlight checks the ingredients. Save it to your diary to feed your gut score.</p></header>
   <div class="panel sec">
    <label class="f" for="mtext">What’s in this meal? Add notes<textarea id="mtext" data-in="mtext" placeholder="e.g. chicken sandwich on sourdough spelt bread with lettuce, mayo and tomato">${esc(L.text)}</textarea></label>
    <div class="row" style="align-items:flex-start">
@@ -215,7 +215,7 @@ function symptoms(){
     <div class="sec" style="gap:8px">${trg.groups.map(([t,n])=>`<div class="comp" style="grid-template-columns:130px 1fr 44px"><span>${TYPES[t].n}</span><div class="bar"><i class="${n/trg.n>=.75?'r':n/trg.n>=.5?'a':'g'}" style="width:${Math.round(n/trg.n*100)}%"></i></div><span>${n}/${trg.n}</span></div>`).join('')}</div>
     ${trg.foods.length?`<p class="small">High FODMAP foods most often eaten beforehand: <b>${trg.foods.map(f=>esc(f[0])+' ('+f[1]+')').join(', ')}</b></p>`:''}
     <p class="small muted">This is a pattern in your own log, not proof of cause. Use it to guide structured reintroduction with a dietitian.</p>`
-   :`<p class="muted">Log a few meals and at least two flares (severity 4 or more) and Gutwise will look for FODMAP groups that keep turning up beforehand.</p>`}</div>
+   :`<p class="muted">Log a few meals and at least two flares (severity 4 or more) and Gutlight will look for FODMAP groups that keep turning up beforehand.</p>`}</div>
   <div class="panel sec"><h2>Medication &amp; supplements</h2><p class="sub">Log what you take so it shows up alongside your symptoms for your doctor.</p>
    <div class="row">${MEDS_COMMON.map(m=>`<button class="chip" aria-pressed="${Md.name===m}" data-act="medPick" data-v="${esc(m)}">${m}</button>`).join('')}</div>
    <div class="grid2"><label class="f" for="medname">Name<input id="medname" type="text" value="${esc(Md.name)}" placeholder="e.g. Peppermint oil" data-in="medname"></label>
@@ -457,7 +457,7 @@ function learnHtml(){
   ${det('Where FODMAPs hide',`<ul><li><b>Onion and garlic</b> sit in stock cubes, sauces, seasoning blends, sausages, soups and ready meals. Look for “natural flavours” too.</li><li><b>Honey, agave and high fructose corn syrup</b> in cereal bars, dressings and drinks.</li><li><b>Inulin and chicory root</b> added to “high fibre” or “gut friendly” products.</li><li><b>Sugar-free sweeteners</b> ending in “-ol” (sorbitol, mannitol, xylitol) in gum, mints and diabetic sweets.</li><li><b>Portion stacking:</b> two amber foods in one meal can add up to a red load.</li></ul><p>Tip: garlic-infused oil and the green tops of spring onions give you the flavour without the fructans.</p>`)}
   ${det('Eating well without FODMAPs',`<ul><li>Choose plain meat, fish and eggs, which contain no FODMAPs.</li><li>Rice, potato, oats, quinoa and gluten-free breads and pastas keep your carbs sorted.</li><li>Swap lactose-containing milk for lactose-free milk and hard cheeses.</li><li>Eat regular meals, chew slowly and drink enough water.</li><li>Manage stress. The gut and brain talk constantly, so use the breathing exercise on the Home page often.</li></ul>`)}
   ${det('When to see a doctor',`<p>IBS is diagnosed after other conditions are ruled out. See a doctor promptly if you have:</p><ul><li>Blood in your stool or black stools</li><li>Unexplained weight loss</li><li>Persistent vomiting, or pain that wakes you at night</li><li>Anaemia, or a family history of bowel cancer or coeliac disease</li><li>New symptoms after age 50</li></ul><p>Don’t start a restrictive diet before coeliac disease has been excluded, as the test needs you to be eating gluten.</p>`)}
-  ${det('About the food ratings',`<p>The FODMAP content of foods is measured by Monash University, and the results are published in the Monash University FODMAP Diet app, which is updated as new foods are tested. Gutwise is an independent tool. Its ratings come from a curated list checked against published Monash guidance and an NHS FODMAP diet sheet, and the checker also reads ingredient lists, ignoring foods you say are left out (like “no onion”). It doesn’t replace the official database, and it can’t see serve sizes or stacking across a day. Check the Monash app for exact serve sizes and new foods.</p><p>Gutwise is for tracking and education and isn’t medical advice. Talk to your doctor or dietitian about your diet.</p>`)}
+  ${det('About the food ratings',`<p>The FODMAP content of foods is measured by Monash University, and the results are published in the Monash University FODMAP Diet app, which is updated as new foods are tested. Gutlight is an independent tool. Its ratings come from a curated list checked against published Monash guidance and an NHS FODMAP diet sheet, and the checker also reads ingredient lists, ignoring foods you say are left out (like “no onion”). It doesn’t replace the official database, and it can’t see serve sizes or stacking across a day. Check the Monash app for exact serve sizes and new foods.</p><p>Gutlight is for tracking and education and isn’t medical advice. Talk to your doctor or dietitian about your diet.</p>`)}
   </div></section>`;
 }
 
@@ -635,9 +635,9 @@ async function exportPdf(){
   const P=(t,size=10,col=[60,70,68])=>{doc.setFont('helvetica','normal').setFontSize(size).setTextColor(...col);const ls=doc.splitTextToSize(ps(t),PW-2*M);room(ls.length*(size+3));doc.text(ls,M,y);y+=ls.length*(size+3)+4};
   const T=(head,body,opts={})=>{doc.autoTable(Object.assign({startY:y,head:[head],body,margin:{left:M,right:M,top:50},styles:{fontSize:8.5,cellPadding:4,textColor:[30,40,38]},headStyles:{fillColor:[68,83,166],textColor:255},alternateRowStyles:{fillColor:[246,248,246]}},opts));y=doc.lastAutoTable.finalY+20};
   const rateCell=col=>d=>{if(d.section==='body'&&d.column.index===col){const v=d.cell.raw;const c=v==='Red'?[248,219,216]:v==='Amber'?[251,235,198]:v==='Green'?[220,240,226]:null;if(c)d.cell.styles.fillColor=c}};
-  doc.setFont('helvetica','bold').setFontSize(22).setTextColor(68,83,166);doc.text('Gutwise gut health report',M,y);y+=20;
+  doc.setFont('helvetica','bold').setFontSize(22).setTextColor(68,83,166);doc.text('Gutlight gut health report',M,y);y+=20;
   P(`Generated ${new Date().toLocaleDateString([],{day:'numeric',month:'long',year:'numeric'})}. Covers the last ${n} days.`);
-  P('Self-reported data recorded in the Gutwise app, for discussion with a healthcare professional. Food ratings follow the Monash University traffic-light approach using a curated list, not the licensed Monash database. This report is not a diagnosis.',9,[100,110,108]);y+=4;
+  P('Self-reported data recorded in the Gutlight app, for discussion with a healthcare professional. Food ratings follow the Monash University traffic-light approach using a curated list, not the licensed Monash database. This report is not a diagnosis.',9,[100,110,108]);y+=4;
   const days=dayData(n),sy=S.sym.filter(x=>x.ts>=since).sort((a,b)=>a.ts-b.ts),ml=S.meals.filter(m=>m.ts>=since).sort((a,b)=>a.ts-b.ts);
   const keys=days.map(d=>d.k),sc=score(keys),sevAvg=avg(sy.map(x=>x.sev)),stAvg=avg(sy.filter(x=>x.stress).map(x=>x.stress));
   const rated=ml.filter(m=>m.level);
@@ -698,15 +698,15 @@ async function exportPdf(){
     }
   }
   const pages=doc.getNumberOfPages();
-  for(let i=1;i<=pages;i++){doc.setPage(i);doc.setFont('helvetica','normal').setFontSize(8).setTextColor(130,140,138);doc.text(`Gutwise report - page ${i} of ${pages}`,PW/2,PH-24,{align:'center'})}
-  const fname='gutwise-report-'+dkey(Date.now())+'.pdf';
+  for(let i=1;i<=pages;i++){doc.setPage(i);doc.setFont('helvetica','normal').setFontSize(8).setTextColor(130,140,138);doc.text(`Gutlight report - page ${i} of ${pages}`,PW/2,PH-24,{align:'center'})}
+  const fname='gutlight-report-'+dkey(Date.now())+'.pdf';
   try{doc.save(fname);toast('Report downloaded')}catch(e){toast('Could not save the PDF')}
 }
 function importDataFile(file){
   const r=new FileReader();
   r.onload=()=>{
     let incoming;
-    try{incoming=JSON.parse(r.result)}catch(e){toast('That file could not be read as Gutwise data.');return}
+    try{incoming=JSON.parse(r.result)}catch(e){toast('That file could not be read as Gutlight data.');return}
     let added=0;
     ['meals','sym','breath','meds','recipes'].forEach(k=>{
       if(!Array.isArray(incoming[k]))return;
@@ -770,7 +770,7 @@ const ACT={
   exportData(){
     const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download='gutwise-data-'+dkey(Date.now())+'.json';document.body.appendChild(a);a.click();a.remove();
+    a.href=url;a.download='gutlight-data-'+dkey(Date.now())+'.json';document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Data exported');
   },
 

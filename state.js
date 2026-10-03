@@ -1,8 +1,8 @@
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const KEY='gutwise.v1',DAY=864e5;
+const KEY='gutlight.v1',OLD_KEY='gutwise.v1',DAY=864e5; // OLD_KEY: this app used to be called Gutwise
 let S={meals:[],sym:[],breath:[],meds:[],recipes:[],demo:false,seeded:false};
-try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+try{const r=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
 let _cloudSync=null; // set by auth.js once signed in: a fn that mirrors S to Firestore, debounced
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));if(_cloudSync)_cloudSync();return true}catch(e){return false}};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -105,7 +105,7 @@ function weeklyDigest(){
   let text;
   if(parts.length)text='This week '+parts.join(', and ')+', compared with last week.';
   else if(prevSym.length||prevMeals.length)text='This week looks about as steady as last week.';
-  else text='Keep logging through the week — Gutwise will start comparing week over week once there’s data for both.';
+  else text='Keep logging through the week — Gutlight will start comparing week over week once there’s data for both.';
   const tn=curScore&&prevScore?(curScore.v>=prevScore.v?(curScore.v===prevScore.v?null:'up'):'down'):null;
   return {text,curScore,prevScore,dir:tn};
 }
