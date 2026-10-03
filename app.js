@@ -439,6 +439,19 @@ function breathe(){
 }
 
 /* ---------- Learn ---------- */
+const DOC_RECS=[
+ [145,'Low FODMAP diet','Food triggers','Usually tried with a specialist dietitian if general diet advice hasn\u2019t been enough, especially when food seems to set off symptoms. It\u2019s meant to be a time-limited trial, then foods are reintroduced to find what you tolerate. Staying restricted long term can narrow your nutrients and change your gut bacteria.'],
+ [40,'Laxatives','Constipation','A bulk-forming laxative is the usual first choice, with the dose adjusted until stools are soft, regular and comfortable. It\u2019s reviewed after about 3 months and stopped if it isn\u2019t helping. Other types can be tried, but lactulose isn\u2019t recommended for IBS. If severe constipation lasts 12 months or more despite several laxatives, a specialist may consider linaclotide.'],
+ [5,'Anti-diarrhoeals','Diarrhoea','Loperamide, which slows the gut down, may be offered when diarrhoea keeps coming back. The dose is adjusted to give comfortable, regular, soft, well-formed stools, and it\u2019s reviewed at about 3 months.'],
+ [205,'Antispasmodics','Pain and cramps','Mebeverine, alverine or peppermint oil, taken when you need them for pain or spasm. They\u2019re reviewed after about 3 months to see whether they\u2019re worth continuing.'],
+ [265,'Low-dose TCA','Persistent pain','If an antispasmodic doesn\u2019t help, a low dose of a tricyclic antidepressant such as amitriptyline may be tried. Here it\u2019s used to calm gut pain signals, not for depression, and it\u2019s an off-label use. Doctors start low, review after 4 weeks, raise the dose slowly if needed, and continue for at least 6 months if it works. Side effects are explained first. If a TCA doesn\u2019t suit you, an SSRI such as citalopram or fluoxetine may be an option.']
+];
+function docRecsHtml(){
+  return `<section class="sec" id="doctor"><header><h3>What a doctor might recommend</h3><p class="sub">IBS care usually starts with diet and lifestyle: regular meals, enough fluid, adjusting fibre, staying active and managing stress. If that isn\u2019t enough, a doctor may suggest these, matched to your main symptoms.</p></header>
+  <div class="lgrid">${DOC_RECS.map(([h,t,tag,txt])=>`<div class="lcard" style="--h:${h}"><b>${t}</b><span class="tag" style="align-self:flex-start">${tag}</span><span>${txt}</span></div>`).join('')}</div>
+  <p class="small muted">If symptoms continue despite treatment, a doctor should reconsider the diagnosis and may refer you to a gastroenterologist, or suggest psychological therapies, especially after about 12 months. Your medication log and PDF report (Symptoms and Trends tabs) can help that conversation.</p>
+  <p class="small muted">A summary of UK NICE guidance (<a href="https://cks.nice.org.uk/topics/irritable-bowel-syndrome/" target="_blank" rel="noopener">NICE CKS: Irritable bowel syndrome</a>). It\u2019s general information, not advice for you. Don\u2019t start, change or stop any medicine without talking to your doctor or pharmacist, and guidance can differ outside the UK.</p></section>`;
+}
 function learnHtml(){
   const ex=t=>FOODS.filter(f=>f.l==='r'&&f.t.includes(t)).slice(0,6).map(f=>f.n).join(', ');
   const det=(t,b,o)=>`<details${o?' open':''}><summary>${t}</summary><div class="body">${b}</div></details>`;
@@ -449,6 +462,7 @@ function learnHtml(){
    <div class="lcard" style="--h:145"><b>The traffic light</b><span><span class="dot g"></span> Green: low FODMAP. <span class="dot a"></span> Amber: small serves only. <span class="dot r"></span> Red: high FODMAP. See the Foods tab, or log a meal to rate it.</span></div>
    <div class="lcard" style="--h:40"><b>Three phases</b><span>Eliminate for 4 to 6 weeks, reintroduce one group at a time over 6 to 8 weeks, then personalise. Best done with a dietitian.</span></div>
   </div>
+  ${docRecsHtml()}
   <div><h3 style="padding-top:6px">Go deeper</h3>
   ${det('What are FODMAPs?',`<p>FODMAP stands for <b>F</b>ermentable <b>O</b>ligosaccharides, <b>D</b>isaccharides, <b>M</b>onosaccharides <b>A</b>nd <b>P</b>olyols. They are short-chain carbohydrates that are poorly absorbed in the small intestine.</p><p>They cause trouble in two ways: they draw extra water into the bowel, and gut bacteria ferment them to make gas. In a sensitive gut that stretching leads to bloating, pain, wind and changes in bowel habit, which are the classic symptoms of IBS.</p><p>The low FODMAP diet was developed by researchers at Monash University in Australia and has good evidence for easing IBS symptoms in many people.</p>`)}
   ${det('The six FODMAP types',`<div class="tbl"><table><thead><tr><th>Type</th><th>Group</th><th>Why it matters</th><th>High FODMAP examples</th></tr></thead><tbody>${['Fr','G','L','F','S','M'].map(t=>`<tr><td><b>${TYPES[t].n}</b></td><td>${TYPES[t].grp}</td><td>${TYPES[t].why}</td><td>${ex(t)}</td></tr>`).join('')}</tbody></table></div>`)}
