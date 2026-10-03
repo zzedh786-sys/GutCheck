@@ -1,20 +1,16 @@
-// Firebase project config.
-//
-// Get these values from: Firebase Console (console.firebase.google.com)
-// -> your project -> the gear icon -> Project settings -> General ->
-// "Your apps" -> the web app (</>) -> SDK setup and configuration.
+// Firebase project config (project: gutwise-aebf6).
 //
 // These values are NOT secret -- they're meant to be public in client-side
-// code. What actually protects your data is the Firestore security rules
-// you set in the console (see README.md), not hiding this file.
+// code. What actually protects the data is the Firestore security rules set
+// in the Firebase console (see README.md), not hiding this file.
 //
-// Until you paste in real values below, the app runs locally only, with no
-// sign-in gate, exactly as it did before.
+// To turn the sign-in gate off, replace these with the original
+// "PASTE_YOUR_..." placeholders and the app goes back to local-only.
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_YOUR_SENDER_ID",
-  appId: "PASTE_YOUR_APP_ID",
+  apiKey: "AIzaSyDmpueALdFB8b_gNV6qujUsGwL6qZ8LmSA",
+  authDomain: "gutwise-aebf6.firebaseapp.com",
+  projectId: "gutwise-aebf6",
+  storageBucket: "gutwise-aebf6.firebasestorage.app",
+  messagingSenderId: "902010705321",
+  appId: "1:902010705321:web:9444978a2c5abd483fe0b8",
 };
