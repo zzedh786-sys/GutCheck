@@ -63,7 +63,8 @@ function home(){
     <div class="panel sec" style="background:var(--accent-soft);border-color:transparent"><h3>Feeling stressed?</h3><p class="sub" style="color:var(--ink)">Stress and the gut are tightly linked. A few minutes of paced breathing can settle both.</p>
      <div class="row"><button class="btn" data-act="go" data-v="breathe">Start breathing</button><button class="btn ghost" data-act="go" data-v="trends">See my trends</button></div>
      ${trg&&trg.groups[0]?`<p class="small"><b>Possible pattern:</b> ${TYPES[trg.groups[0][0]].n} showed up before ${trg.groups[0][1]} of your ${trg.n} flares.</p>`:''}</div>
-   </div></section>`;
+   </div>
+   ${learnHtml()}</section>`;
 }
 
 /* ---------- Food check / diary ---------- */
@@ -239,7 +240,7 @@ function foodRows(){
     return `<div class="cat sec" style="--h:${CATH[c]}"><h3>${CATS[c]}</h3><div class="list">${fs.map(f=>`<div class="item"><span class="dot ${f.l}"></span><div><div class="nm">${esc(f.n)}</div><div class="meta">${tagsOf(f)}<span>${esc(f.note)}</span></div></div>${light(f.l)}</div>`).join('')}</div></div>`;
   }).join('');
 }
-function foods(){
+function foodGuide(){
   const cnt=l=>FOODS.filter(f=>f.l===l).length;
   return `<section class="sec"><header><h1>FODMAP food guide</h1><p class="sub">The traffic-light system: green foods are safe in normal serves, amber foods depend on portion size, red foods are high in FODMAPs.</p></header>
   <div class="legend"><div class="g"><b>Green · ${cnt('g')} foods</b>Low FODMAP. Eat freely in normal serves.</div><div class="a"><b>Amber · ${cnt('a')} foods</b>Low in small serves only. Watch the portion and don’t stack several.</div><div class="r"><b>Red · ${cnt('r')} foods</b>High FODMAP. Avoid during the elimination phase.</div></div>
@@ -256,6 +257,10 @@ const FID=n=>FOODS.find(f=>f.n===n).id;
 const B={ids:new Set(),name:'',amber:false,type:'Dinner'};
 const SLOTS=[['P','Protein','Pick one'],['G','Grains & starches','Pick one'],['V','Vegetables','Pick two or three'],['S','Flavour, oils & herbs','Pick a few'],['F','Fruit','Optional'],['D','Dairy & alternatives','Optional'],['N','Nuts & seeds','Optional']];
 const PRESETS=[['Chicken rice bowl',['Chicken','White rice','Carrot','Leafy greens','Garlic-infused oil','Fresh herbs']],['Salmon & potatoes',['Fish','Potato','Green beans','Lemon & lime','Cooking oils']],['Cheddar omelette',['Eggs','Cheese (hard & aged)','Leafy greens','Tomato','Sourdough spelt bread']],['Overnight oats',['Oats','Blueberries','Almond milk','Seeds']]];
+let FoodsTab='guide';
+function foods(){
+  return `<section class="sec"><div class="seg" role="tablist" aria-label="Foods section"><button type="button" role="tab" aria-selected="${FoodsTab==='guide'}" data-act="foodsTab" data-v="guide">Food guide</button><button type="button" role="tab" aria-selected="${FoodsTab==='builder'}" data-act="foodsTab" data-v="builder">Meal builder</button></div></section>`+(FoodsTab==='builder'?builder():foodGuide());
+}
 function builder(){
   const sel=[...B.ids].map(i=>FOODS[i]),amb=sel.filter(f=>f.l==='a'),has=c=>sel.some(f=>f.c===c);
   const hints=[];if(sel.length){if(!has('P'))hints.push('Add a protein');if(!has('G'))hints.push('Add a grain or starch for energy');if(!has('V'))hints.push('Add some vegetables')}
@@ -427,23 +432,30 @@ function breathe(){
    ${sndPanel(false)}
    <div class="row"><button class="btn" data-act="bStart">Start breathing</button></div>
    <p class="small muted">Sit comfortably, breathe through your nose if you can, and let your belly move. If you feel dizzy, return to normal breathing.</p></div>`;
-  return `<section class="sec"><header><h1>Breathe</h1><p class="sub">Slow, paced breathing calms the gut-brain axis. Use it when stress or a flare-up makes your gut tense up.</p></header>${main}
+  return `<section class="sec"><button type="button" class="btn ghost small" data-act="go" data-v="home" style="align-self:flex-start">← Home</button><header><h1>Breathe</h1><p class="sub">Slow, paced breathing calms the gut-brain axis. Use it when stress or a flare-up makes your gut tense up.</p></header>${main}
   <div class="grid2"><div class="panel sec"><h3>A quick thought check</h3><ol class="small" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px"><li><b>Notice</b> the worry. Name it: “I’m worried about…”</li><li><b>Check</b> the evidence. How likely is it really? What has happened before?</li><li><b>Reframe</b> it into something fair and useful. What would you tell a friend?</li></ol></div>
   <div class="panel sec"><h3>Your sessions</h3><p class="small">${wk.length?`${wk.length} session${wk.length>1?'s':''} this week${avg!=null?`. Average stress drop: <b>${avg.toFixed(1)} points</b>.`:'.'}`:'No sessions this week yet.'}</p>
    ${sess.slice(0,4).map(s=>`<p class="small muted">${fmtD(s.ts)} · ${s.pat} · ${Math.round(s.secs/60)||1} min${s.pre!=null?` · stress ${s.pre} → ${s.post}`:''}</p>`).join('')}</div></div></section>`;
 }
 
 /* ---------- Learn ---------- */
-function learn(){
+function learnHtml(){
   const ex=t=>FOODS.filter(f=>f.l==='r'&&f.t.includes(t)).slice(0,6).map(f=>f.n).join(', ');
   const det=(t,b,o)=>`<details${o?' open':''}><summary>${t}</summary><div class="body">${b}</div></details>`;
-  return `<section class="sec"><header><h1>Learn about FODMAPs</h1><p class="sub">What they are, why they upset the gut, and how the low FODMAP diet works.</p></header><div>
-  ${det('What are FODMAPs?',`<p>FODMAP stands for <b>F</b>ermentable <b>O</b>ligosaccharides, <b>D</b>isaccharides, <b>M</b>onosaccharides <b>A</b>nd <b>P</b>olyols. They are short-chain carbohydrates that are poorly absorbed in the small intestine.</p><p>They cause trouble in two ways: they draw extra water into the bowel, and gut bacteria ferment them to make gas. In a sensitive gut that stretching leads to bloating, pain, wind and changes in bowel habit, which are the classic symptoms of IBS.</p><p>The low FODMAP diet was developed by researchers at Monash University in Australia and has good evidence for easing IBS symptoms in many people.</p>`,true)}
+  return `<section class="sec" id="learn"><header><h2>Learn about FODMAPs</h2><p class="sub">The basics at a glance, with more detail underneath.</p></header>
+  <div class="lgrid">
+   <div class="lcard" style="--h:235"><b>What they are</b><span>Short-chain carbohydrates (Fermentable Oligosaccharides, Disaccharides, Monosaccharides And Polyols) that are poorly absorbed in the small intestine.</span></div>
+   <div class="lcard" style="--h:335"><b>Why they upset the gut</b><span>They draw extra water into the bowel and gut bacteria ferment them into gas. In a sensitive gut that means bloating, pain, wind and changes in bowel habit.</span></div>
+   <div class="lcard" style="--h:145"><b>The traffic light</b><span><span class="dot g"></span> Green: low FODMAP. <span class="dot a"></span> Amber: small serves only. <span class="dot r"></span> Red: high FODMAP. See the Foods tab, or log a meal to rate it.</span></div>
+   <div class="lcard" style="--h:40"><b>Three phases</b><span>Eliminate for 2 to 6 weeks, reintroduce one group at a time over 6 to 8 weeks, then personalise. Best done with a dietitian.</span></div>
+  </div>
+  <div><h3 style="padding-top:6px">Go deeper</h3>
+  ${det('What are FODMAPs?',`<p>FODMAP stands for <b>F</b>ermentable <b>O</b>ligosaccharides, <b>D</b>isaccharides, <b>M</b>onosaccharides <b>A</b>nd <b>P</b>olyols. They are short-chain carbohydrates that are poorly absorbed in the small intestine.</p><p>They cause trouble in two ways: they draw extra water into the bowel, and gut bacteria ferment them to make gas. In a sensitive gut that stretching leads to bloating, pain, wind and changes in bowel habit, which are the classic symptoms of IBS.</p><p>The low FODMAP diet was developed by researchers at Monash University in Australia and has good evidence for easing IBS symptoms in many people.</p>`)}
   ${det('The six FODMAP types',`<div class="tbl"><table><thead><tr><th>Type</th><th>Group</th><th>Why it matters</th><th>High FODMAP examples</th></tr></thead><tbody>${['Fr','G','L','F','S','M'].map(t=>`<tr><td><b>${TYPES[t].n}</b></td><td>${TYPES[t].grp}</td><td>${TYPES[t].why}</td><td>${ex(t)}</td></tr>`).join('')}</tbody></table></div>`)}
   ${det('The traffic light system',`<div class="legend"><div class="g"><b>Green</b>Low FODMAP at the tested serve size. Safe to eat during elimination.</div><div class="a"><b>Amber</b>Low at a small serve but high at larger ones. Measure your portions and avoid stacking amber foods.</div><div class="r"><b>Red</b>High FODMAP even in modest serves. Avoid while you eliminate.</div></div><p>FODMAPs are dose dependent. A food can change colour with the serving size, which is why the same food may have a green serve and a red serve. Everything adds up across a meal and a day.</p>`)}
   ${det('The three phases of the diet',`<ol><li><b>Elimination (2 to 6 weeks).</b> Swap high FODMAP foods for low FODMAP ones and track your symptoms. This is a short test, not a life sentence.</li><li><b>Reintroduction (6 to 8 weeks).</b> Test one FODMAP group at a time in gradually bigger serves to find which ones you tolerate and how much.</li><li><b>Personalisation.</b> Build a long-term diet that is as varied as possible, only limiting your true triggers.</li></ol><p>It’s best done with a registered dietitian. Restricting for longer than needed can reduce gut-friendly bacteria and nutrient variety.</p>`)}
   ${det('Where FODMAPs hide',`<ul><li><b>Onion and garlic</b> sit in stock cubes, sauces, seasoning blends, sausages, soups and ready meals. Look for “natural flavours” too.</li><li><b>Honey, agave and high fructose corn syrup</b> in cereal bars, dressings and drinks.</li><li><b>Inulin and chicory root</b> added to “high fibre” or “gut friendly” products.</li><li><b>Sugar-free sweeteners</b> ending in “-ol” (sorbitol, mannitol, xylitol) in gum, mints and diabetic sweets.</li><li><b>Portion stacking:</b> two amber foods in one meal can add up to a red load.</li></ul><p>Tip: garlic-infused oil and the green tops of spring onions give you the flavour without the fructans.</p>`)}
-  ${det('Eating well without FODMAPs',`<ul><li>Choose plain meat, fish and eggs, which contain no FODMAPs.</li><li>Rice, potato, oats, quinoa and gluten-free breads and pastas keep your carbs sorted.</li><li>Swap lactose-containing milk for lactose-free milk and hard cheeses.</li><li>Eat regular meals, chew slowly and drink enough water.</li><li>Manage stress. The gut and brain talk constantly, so use the Breathe tab often.</li></ul>`)}
+  ${det('Eating well without FODMAPs',`<ul><li>Choose plain meat, fish and eggs, which contain no FODMAPs.</li><li>Rice, potato, oats, quinoa and gluten-free breads and pastas keep your carbs sorted.</li><li>Swap lactose-containing milk for lactose-free milk and hard cheeses.</li><li>Eat regular meals, chew slowly and drink enough water.</li><li>Manage stress. The gut and brain talk constantly, so use the breathing exercise on the Home page often.</li></ul>`)}
   ${det('When to see a doctor',`<p>IBS is diagnosed after other conditions are ruled out. See a doctor promptly if you have:</p><ul><li>Blood in your stool or black stools</li><li>Unexplained weight loss</li><li>Persistent vomiting, or pain that wakes you at night</li><li>Anaemia, or a family history of bowel cancer or coeliac disease</li><li>New symptoms after age 50</li></ul><p>Don’t start a restrictive diet before coeliac disease has been excluded, as the test needs you to be eating gluten.</p>`)}
   ${det('About the food ratings',`<p>The FODMAP content of foods is measured by Monash University, and the results are published in the Monash University FODMAP Diet app, which is updated as new foods are tested. Gutwise is an independent tool. Its ratings come from a curated list based on published Monash traffic-light guidance and don’t replace the official database. Check the Monash app for exact serve sizes and new foods.</p><p>Gutwise is for tracking and education and isn’t medical advice. Talk to your doctor or dietitian about your diet.</p>`)}
   </div></section>`;
@@ -709,15 +721,18 @@ function importDataFile(file){
 }
 
 /* ---------- Router & events ---------- */
-const V={home,log,symptoms,foods,builder,breathe,trends,learn};
-const NAV=[['home','Home','<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],['log','Log','<path d="M9 4h6v3H9z"/><path d="M7 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1"/><path d="M8 12h8M8 16h5"/>'],['symptoms','Symptoms','<path d="M3 12h4l2-6 4 12 2-6h6"/>'],['foods','Foods','<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" stroke-width="3"/>'],['builder','Build','<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>'],['breathe','Breathe','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>'],['trends','Trends','<path d="M3 20h18M6 20v-7M11 20V6M16 20v-10"/>'],['learn','Learn','<path d="M4 19V5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0 0 4h14"/>']];
+const V={home,log,symptoms,foods,breathe,trends};
+const NAV=[['home','Home','<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],['log','Log','<path d="M9 4h6v3H9z"/><path d="M7 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1"/><path d="M8 12h8M8 16h5"/>'],['symptoms','Symptoms','<path d="M3 12h4l2-6 4 12 2-6h6"/>'],['foods','Foods','<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" stroke-width="3"/>'],['trends','Trends','<path d="M3 20h18M6 20v-7M11 20V6M16 20v-10"/>']];
 let cur='home';
 function render(){
   if(Scan.active)stopScan();
   $('#view').innerHTML=V[cur]();
-  document.querySelectorAll('#nav button').forEach(b=>b.getAttribute('data-v')===cur?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  const navKey=cur==='breathe'?'home':cur;
+  document.querySelectorAll('#nav button').forEach(b=>b.getAttribute('data-v')===navKey?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
 }
 function go(v,noScroll){
+  if(v==='builder'){FoodsTab='builder';v='foods'}
+  if(v==='learn')v='home';
   if(cur==='breathe'&&v!=='breathe'){stopBreath();sndStop();if(Br.mode==='run')Br.mode='setup'}
   if(cur==='log'&&v!=='log'&&Scan.active)stopScan();
   cur=V[v]?v:'home';render();if(!noScroll)window.scrollTo(0,0);
@@ -750,6 +765,7 @@ const ACT={
       toast(blocked?'Camera access was blocked. Allow it in your browser\u2019s site settings, or type a barcode instead.':e&&e.name==='NotFoundError'?'No camera was found on this device. Type a barcode instead.':'Couldn\u2019t start the camera. Type a barcode instead.');
     });
   },
+  foodsTab(el){FoodsTab=el.dataset.v;render()},
   stopScanAct(){stopScan();const box=$('#scanbox'),startBtn=$('#scanStartBtn');if(box)box.hidden=true;if(startBtn)startBtn.hidden=false},
   exportData(){
     const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
