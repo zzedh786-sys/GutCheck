@@ -209,3 +209,5 @@ th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mu
 .linkbtn{background:none;border:0;color:var(--accent);font-weight:600;font-size:.88rem;cursor:pointer;align-self:center;padding:2px 6px}
 .autherr{color:var(--red);background:var(--red-bg);border-radius:10px;padding:9px 12px;font-size:.88rem}
 .authok{color:var(--green);background:var(--green-bg);border-radius:10px;padding:9px 12px;font-size:.88rem}
+
+.lcard ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
