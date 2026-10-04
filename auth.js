@@ -67,7 +67,7 @@
   function renderAuthForm(err, note) {
     const up = mode === 'signup';
     overlay.innerHTML = `<div class="authcard panel lift sec">
-      <div class="authmark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="14" height="26" rx="7"/><circle cx="16" cy="10" r="2.6" fill="#D64A42" stroke="none"/><circle cx="16" cy="16" r="2.6" fill="#E0A020" stroke="none"/><circle cx="16" cy="22" r="2.6" fill="#2FA25A" stroke="none"/></svg></div>
+      <div class="authmark" aria-hidden="true"><svg viewBox="180 160 664 640" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M262 770 V330 A100 100 0 0 1 362 230" stroke="#3FC378" stroke-width="110"/><path d="M340 230 H684" stroke="#F2B134" stroke-width="110"/><path d="M662 230 A100 100 0 0 1 779 330 V600 C779 690 720 720 650 720" stroke="#E5574F" stroke-width="110"/><path d="M410 385 H615 A42 42 0 0 1 615 470 H410 A42 42 0 0 0 410 555 H615 A42 42 0 0 1 615 640 H470" stroke="currentColor" stroke-width="46"/></g></svg></div>
       <header class="sec" style="text-align:center;gap:4px">
         <h1 style="font-size:1.5rem">${up ? 'Create your account' : 'Welcome to Gutlight'}</h1>
         <p class="sub" style="margin-inline:auto">${up ? 'Save your gut health data to an account and pick it up on any device.' : 'Sign in to track your gut health and sync across devices.'}</p>
